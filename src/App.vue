@@ -29,7 +29,9 @@ export default {
   methods: {
     ...mapActions('oidcStore', [
       'authenticateOidcPopup',
-      'removeOidcUser'
+      'authenticateOidc',
+      'removeOidcUser',
+      'signOutOidcSilent'
     ]),
     userLoaded: function (e) {
       console.log('I am listening to the user loaded event in vuex-oidc', e.detail)
@@ -41,9 +43,13 @@ export default {
       console.log('I am listening to the automaticSilentRenewError event in vuex-oidc', e.detail)
     },
     signOut: function () {
-      this.removeOidcUser().then(() => {
-        this.$router.push('/')
-      })
+      this.removeOidcUser()
+        .then(() => {
+          this.signOutOidcSilent()
+        })
+        .then(() => {
+          this.$router.push('/')
+        })
     }
   },
   mounted () {
