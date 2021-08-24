@@ -47,6 +47,13 @@ export default {
       this.authenticateOidcSilent()
         .catch(() => this.removeOidcUser())
     }
+  },
+  mounted () {
+    let open = XMLHttpRequest.prototype.open
+    XMLHttpRequest.prototype.open = function (method, url) {
+      open.apply(this, arguments)
+      this.withCredentials = true
+    }
   }
 }
 </script>
